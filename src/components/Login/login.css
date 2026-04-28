@@ -1,0 +1,60 @@
+/* Full screen background */
+.login-bg {
+  height: 100vh;
+  width: 100%;
+  background: url("/bgImage.jpg") no-repeat center center/cover;
+  position: relative;
+}
+
+/* .login-bg::before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+} */
+
+/* Glass card */
+.logIn .card {
+    border-radius: 16px !important;
+    backdrop-filter: blur(15px) !important;
+    -webkit-backdrop-filter: blur(15px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    /* box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25) !important; */
+    color: white !important;
+    transition: 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+}
+
+.logIn .form-control {
+    width: 100%;
+    background: rgba(182, 178, 178, 0.475) !important;
+    border: none;
+    color: white !important;
+    padding: 10px 12px;
+    border-radius: 999px !important;
+}
+
+.logIn .form-control::placeholder {
+    color: rgba(255, 255, 255, 0.841);
+}
+
+.logIn .form-control:focus {
+    box-shadow: none;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.object-fit-cover {
+    object-fit: cover;
+}
