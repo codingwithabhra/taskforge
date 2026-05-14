@@ -15,7 +15,7 @@
 }
 
 /* Glass card */
-.card {
+.signupBg .card {
     background: rgba(85, 124, 134, 0.3) !important;
     border-radius: 16px !important;
     backdrop-filter: blur(15px) !important;

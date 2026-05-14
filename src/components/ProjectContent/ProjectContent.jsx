@@ -1,12 +1,8 @@
 import React from "react";
-import axios from "axios";
-import { useState, useEffect } from "react";
-import { toast } from "react-toastify";
 import useMainContext from "../../contexts/useMainContext";
-import { useFilterContext } from "../../contexts/filterContext";
 import { Link } from "react-router-dom";
 
-const HomeProjects = () => {
+const ProjectContent = () => {
   const {
     projects,
     setProjects,
@@ -22,54 +18,19 @@ const HomeProjects = () => {
     projectStatus,
     setProjectStatus,
   } = useMainContext();
-  // console.log("this is from project component -- ", projects);
-
-  const { filter, setFilter } = useFilterContext();
-
-  let filteredProjects = [...projects];
-
-  // Filter by status
-  if (filter.status === "completed") {
-    filteredProjects = filteredProjects.filter(
-      (project) => project.status === "completed",
-    );
-  }
-
-  if (filter.status === "inprogress") {
-    filteredProjects = filteredProjects.filter(
-      (project) => project.status === "inprogress",
-    );
-  }
-
-  if (filter.status === "all") {
-    filteredProjects = filteredProjects.filter(
-      (project) =>
-        project.status === "inprogress" || project.status === "completed",
-    );
-  }
 
   return (
-    <div className="homeProject pt-3">
-      {/* HEADER PART */}
-      <div className="headerPart d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
-        <div className="leftPrt">
-          <h2 className="fw-bold pt-3">Projects</h2>
+    <div className="container-fluid pt-3">
+      <div className="projectTop d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+        <div className="teamTop-heading">
+          <h1>Projects</h1>
         </div>
-        <div className="rightPrt">
-          <select
-            name="filter"
-            id="filterBtn"
-            className="mx-2"
-            onChange={(e) =>
-              setFilter((prev) => ({
-                ...prev,
-                status: e.target.value,
-              }))
-            }
-          >
-            <option value="all">All</option>
-            <option value="inprogress">In Progress</option>
-            <option value="completed">Completed</option>
+        <div className="projectTop-buttons">
+          <select name="filter" id="filterBtn" className="mx-2">
+            <option value="">Filter</option>
+            <option value="">Filter 1</option>
+            <option value="">Filter 2</option>
+            <option value="">Filter 3</option>
           </select>
           <button
             className="teamBtn"
@@ -80,6 +41,8 @@ const HomeProjects = () => {
           </button>
         </div>
       </div>
+
+      <hr />
 
       {/* ✅ Bootstrap Modal */}
       <div
@@ -202,18 +165,13 @@ const HomeProjects = () => {
       </div>
 
       {/* PROJECT LIST */}
-      <div className="projectList mt-4">
+      <div className="projectList mt-5">
         <div className="row g-5">
           {loading ? (
             <p>Loading projects...</p>
-          ) : filteredProjects.length > 0 ? (
-            filteredProjects?.map((project) => (
-              <Link
-                to={`/projects/${project._id}`}
-                state={{ from: "/dashboard" }}
-                key={project._id}
-                className="col-lg-4 col-md-6 col-sm-12 text-decoration-none text-dark"
-              >
+          ) : projects.length > 0 ? (
+            projects?.map((project) => (
+              <Link key={project._id} className="col-lg-4 col-md-6 col-sm-12 text-decoration-none text-dark" to={`/projects/${project._id}`}>
                 <div
                   className="team-card h-100 shadow-sm px-3 py-4 rounded"
                   style={{ background: "#F5F5F5" }}
@@ -227,23 +185,37 @@ const HomeProjects = () => {
                       >
                         {project.name}
                       </h5>
-
-                      <div
-                        className="status mb-2"
-                        style={{ fontSize: "0.8rem" }}
-                      >
-                        <span
-                          className={`badge ${project.status === "completed" ? "bg-success" : "bg-warning"}`}
-                        >
-                          {project.status === "completed"
-                            ? "Completed"
-                            : "In Progress"}
-                        </span>
-                      </div>
                     </div>
                     <p className="mt-3 mb-0" style={{ fontSize: "0.9rem" }}>
                       {project.description}
                     </p>
+
+                    {/* CARD FOOTER */}
+                    <div className="heading d-flex justify-content-between align-items-center flex-wrap gap-2 mt-3">
+                      <div className="status" style={{ fontSize: "0.8rem" }}>
+                        <h6 className="mb-0">
+                          Status:
+                          <span
+                            className={`badge ${project.status === "completed" ? "bg-success" : "bg-warning"}`}
+                            style={{ marginLeft: "5px" }}
+                          >
+                            {project.status === "completed"
+                              ? "Completed"
+                              : "In Progress"}
+                          </span>
+                        </h6>
+                      </div>
+
+                      <div className="deadline" style={{ fontSize: "0.9rem" }}>
+                        <span className="mb-0 fw-bold">Deadline:</span>
+                        <span
+                          className="fw-regular"
+                          style={{ marginLeft: "5px" }}
+                        >
+                          {new Date(project.deadline).toLocaleDateString()}
+                        </span>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </Link>
@@ -257,4 +229,4 @@ const HomeProjects = () => {
   );
 };
 
-export default HomeProjects;
+export default ProjectContent;

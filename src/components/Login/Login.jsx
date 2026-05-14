@@ -1,35 +1,49 @@
 import React, { useState } from "react";
-import "./Login.css";
+import "./login.css";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import useMainContext from "../../contexts/useMainContext";
 
 const Login = () => {
   const navigate = useNavigate();
 
-  const [ formData, setFormdata ] = useState({
+  const { setCurrentUser } = useMainContext();
+
+  const [formData, setFormdata] = useState({
     email: "",
     password: "",
   });
 
-  const [ error, setError ] = useState("");
+  const [error, setError] = useState("");
 
   const handleChange = (e) => {
-    setFormdata({...formData, [e.target.name]: e.target.value});
+    setFormdata({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async() => {
+  const handleSubmit = async () => {
     try {
-      const response = await axios.post("https://taskforge-backend.vercel.app/auth/login", formData);
+      const response = await axios.post(
+        "http://localhost:3000/auth/login",
+        formData,
+      );
 
-       // storing token
+      console.log(response.data);
+
+      // storing token
       localStorage.setItem("token", response.data.token);
+
+      // storing user info
+      localStorage.setItem("user", JSON.stringify(response.data.user));
+
+      // Update context
+      setCurrentUser(response.data.user);
 
       // redirecting to home page
       navigate("/dashboard");
     } catch (error) {
       setError(error.response?.data?.error || "Login Failed");
     }
-  }
+  };
 
   return (
     <div

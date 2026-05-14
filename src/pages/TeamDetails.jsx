@@ -1,15 +1,22 @@
 import React from "react";
 import Sidebar from "../components/Sidebar/Sidebar";
+import Sidebar2 from "../components/Sidebar/Sidebar2";
 import Teamdetails from "../components/Teamdetails/Teamdetails";
+import { Link } from "react-router-dom";
 
 const TeamDetails = () => {
-
   return (
     <>
-      <header>
-        {/* Toggle button (only visible on small screens) */}
+      <header className="d-lg-none w-100 px-3 pt-3 d-flex justify-content-between align-items-center">
+        <div className="logo">
+          <Link to="/home" className="logo-link">
+            <img src="/Logo.png" alt="logo" style={{ height: "40px" }} />
+          </Link>
+        </div>
+
+        {/* Toggle button */}
         <button
-          className="btn btn-primary d-lg-none position-absolute top-100 end-0 mx-2 my-2"
+          className="btn btn-primary"
           data-bs-toggle="offcanvas"
           data-bs-target="#mobileSidebar"
         >
@@ -22,7 +29,7 @@ const TeamDetails = () => {
         className="offcanvas offcanvas-start d-lg-none"
         tabIndex="-1"
         id="mobileSidebar"
-        style={{ backgroundColor: "#E6E6FA " }}
+        style={{ backgroundColor: "#E6E6FA ", maxWidth: "70%" }}
       >
         <div className="offcanvas-header">
           <button
@@ -32,12 +39,12 @@ const TeamDetails = () => {
           ></button>
         </div>
         <div className="offcanvas-body">
-          <Sidebar />
+          <Sidebar2 />
         </div>
       </div>
 
       <main className="d-flex">
-        <div className="leftSide h-100">
+        <div className="leftSide d-none d-lg-block">
           <Sidebar />
         </div>
         <div className="rightSide p-4" style={{ flex: "1" }}>

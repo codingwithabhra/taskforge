@@ -2,36 +2,32 @@
 
 /* Sidebar (optional if not already styled) */
 .sidebar {
-  width: 280px;
-  height: 100vh;
-  position: sticky;
-  top: 0;
+  width: 250px;
+  height: 100%;
+  min-height: 100vh;
   background-color: #E6E6FA;
   font-family: "Inter", sans-serif;
 }
 
 /* Logo container */
-.logo {
-  width: 100%;
-  height: 45px; /* fixed area */
+.sidebar .logo {
   display: flex;
-  align-items: left;
-  justify-content: center;
-  overflow: hidden; /* prevents overflow */
+  align-items: center;
+  justify-content: flex-start;
+  margin-bottom: 3rem;
+  padding-left: 8px;
 }
 
 /* Link wrapper */
 .logo-link {
-  display: block;
-  width: 100%;
-  height: 100%;
+  display: inline-block;
 }
 
 /* Image control */
 .logo img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain; /* VERY IMPORTANT */
+  height: 45px;
+  width: auto;
+  object-fit: contain;
 }
 
 .sidebar-link {

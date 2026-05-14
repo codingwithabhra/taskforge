@@ -7,17 +7,10 @@ import { HiOutlineUserGroup } from "react-icons/hi2";
 import { BsGraphDownArrow } from "react-icons/bs";
 import { CiSettings } from "react-icons/ci";
 
-const Sidebar = () => {
+const Sidebar2 = () => {
   return (
     <>
       <div className="sidebar p-4">
-        {/* FOR LOGO */}
-        <div className="logo mt-3 mb-5">
-          <Link to="/home" className="logo-link">
-            <img src="/Logo.png" alt="logo" />
-          </Link>
-        </div>
-
         {/* FOR NAVIGATION LINKS */}
         <nav>
           <ul className="list-unstyled">
@@ -68,4 +61,4 @@ const Sidebar = () => {
   );
 };
 
-export default Sidebar;
+export default Sidebar2;

@@ -7,7 +7,7 @@ import useMainContext from "../../contexts/useMainContext";
 import { Link } from "react-router-dom";
 
 const TeamContent = () => {
-  const { teamData, setTeamData, allUsers, setAllUsers, loading, setLoading } =
+  const { teamData, setTeamData, allUsers, setAllUsers, loading, setLoading, getInitials, getColor, fetchTeamData } =
     useMainContext();
   console.log(teamData);
 
@@ -26,7 +26,7 @@ const TeamContent = () => {
 
       // Team API call
       const response = await axios.post(
-        "https://taskforge-backend.vercel.app/teams",
+        "http://localhost:3000/teams",
         {
           name: teamName,
           members,
@@ -40,7 +40,7 @@ const TeamContent = () => {
       console.log(response.data);
 
       //updating team data in context
-      setTeamData((prev) => [...prev, response.data.data]);
+      await fetchTeamData();
 
       // Reset form
       setTeamName("");
@@ -55,29 +55,13 @@ const TeamContent = () => {
     }
   };
 
-  const getInitials = (name) => {
-    if (!name) return "";
-    const words = name.split(" ");
-    return words.length === 1 ? words[0][0] : words[0][0] + words[1][0];
-  };
-
-  const colors = ["#FF4500", "#C21E56", "#16a34a", "#f59e0b"];
-
-  const getColor = (index) => colors[index % colors.length];
-
   return (
-    <div className="container pt-3">
+    <div className="container-fluid pt-3">
       <div className="teamTop d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
         <div className="teamTop-heading">
           <h1>Teams</h1>
         </div>
         <div className="teamTop-buttons">
-          <select name="filter" id="filterBtn" className="mx-2">
-            <option value="">Filter</option>
-            <option value="">Filter 1</option>
-            <option value="">Filter 2</option>
-            <option value="">Filter 3</option>
-          </select>
           <button
             className="teamBtn"
             data-bs-toggle="modal"
@@ -172,7 +156,7 @@ const TeamContent = () => {
       </div>
 
       {/* Team Mapping */}
-      <div className="container py-3">
+      <div className="container-fluid mt-4 py-3">
         <div className="row g-5">
           {loading ? (
             <div className="">
@@ -189,7 +173,7 @@ const TeamContent = () => {
                     {/* HEADING */}
                     <h5 className="fs-5 text-dark fw-bold mb-2">{team.name}</h5>
                     {/* CONTENT */}
-                    <div className="d-flex justify-content-between gap-3">
+                    <div className="d-flex justify-content-between flex-wrap gap-3">
                       <div className="d-flex align-items-center mt-3">
                         {team.members?.slice(0, 3).map((member, index) => (
                           <div

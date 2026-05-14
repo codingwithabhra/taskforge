@@ -1,10 +1,10 @@
 import React from "react";
 import Sidebar from "../components/Sidebar/Sidebar";
 import Sidebar2 from "../components/Sidebar/Sidebar2";
-import TeamContent from "../components/Team/TeamContent";
+import SettingPage from "../components/Setting/SettingPage";
 import { Link } from "react-router-dom";
 
-const Team = () => {
+const Settings = () => {
   return (
     <>
       <header className="d-lg-none w-100 px-3 pt-3 d-flex justify-content-between align-items-center">
@@ -48,11 +48,11 @@ const Team = () => {
           <Sidebar />
         </div>
         <div className="rightSide p-4" style={{ flex: "1" }}>
-          <TeamContent />
+          <SettingPage />
         </div>
       </main>
     </>
   );
 };
 
-export default Team;
+export default Settings;
