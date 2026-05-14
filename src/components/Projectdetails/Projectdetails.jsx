@@ -114,7 +114,7 @@ const ProjectDetails = () => {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.post(
-        "http://localhost:3000/tasks",
+        "https://taskforge-backend.vercel.app/tasks",
         {
           name: taskName,
           project: projectId,

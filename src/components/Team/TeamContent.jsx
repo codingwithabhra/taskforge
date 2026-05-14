@@ -26,7 +26,7 @@ const TeamContent = () => {
 
       // Team API call
       const response = await axios.post(
-        "http://localhost:3000/teams",
+        "https://taskforge-backend.vercel.app/teams",
         {
           name: teamName,
           members,

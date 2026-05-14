@@ -13,7 +13,7 @@ const Signup = () => {
 
   const handleSignup = async () => {
     try {
-      const response = await axios.post("http://localhost:3000/auth/signup", 
+      const response = await axios.post("https://taskforge-backend.vercel.app/auth/signup", 
         { name, email, password }
       );
       console.log(response.data);

@@ -64,7 +64,7 @@ export const MainContextProvider = ({ children }) => {
     try {
       const token = localStorage.getItem("token");
       if (!token) return;
-      const res = await axios.get("http://localhost:3000/auth/users", {
+      const res = await axios.get("https://taskforge-backend.vercel.app/auth/users", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -80,7 +80,7 @@ export const MainContextProvider = ({ children }) => {
     try {
       const token = localStorage.getItem("token");
       if (!token) return;
-      const response = await axios.get("http://localhost:3000/teams", {
+      const response = await axios.get("https://taskforge-backend.vercel.app/teams", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -97,7 +97,7 @@ export const MainContextProvider = ({ children }) => {
     try {
       const token = localStorage.getItem("token");
       if (!token) return;
-      const response = await axios.get("http://localhost:3000/projects", {
+      const response = await axios.get("https://taskforge-backend.vercel.app/projects", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -114,7 +114,7 @@ export const MainContextProvider = ({ children }) => {
       const token = localStorage.getItem("token");
       if (!token) return;
 
-      const response = await axios.get("http://localhost:3000/tasks", {
+      const response = await axios.get("https://taskforge-backend.vercel.app/tasks", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -158,7 +158,7 @@ export const MainContextProvider = ({ children }) => {
 
       //Project API call
       const response = await axios.post(
-        "http://localhost:3000/projects",
+        "https://taskforge-backend.vercel.app/projects",
         {
           name: projectName,
           description: projectDescription,
@@ -199,7 +199,7 @@ export const MainContextProvider = ({ children }) => {
       const token = localStorage.getItem("token");
 
       const response = await axios.post(
-        `http://localhost:3000/tasks/${taskId}`,
+        `https://taskforge-backend.vercel.app/tasks/${taskId}`,
         {
           status: updatedStatus,
         },
@@ -237,7 +237,7 @@ export const MainContextProvider = ({ children }) => {
       const token = localStorage.getItem("token");
 
       const response = await axios.delete(
-        `http://localhost:3000/projects/${projectId}`,
+        `https://taskforge-backend.vercel.app/projects/${projectId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -269,7 +269,7 @@ export const MainContextProvider = ({ children }) => {
       const token = localStorage.getItem("token");
 
       const response = await axios.delete(
-        `http://localhost:3000/tasks/${taskId}`,
+        `https://taskforge-backend.vercel.app/tasks/${taskId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
