@@ -1,6 +1,7 @@
 import React from "react";
 import useMainContext from "../../contexts/useMainContext";
 import { FaTasks } from "react-icons/fa";
+import { MdDeleteForever } from "react-icons/md";
 
 const TaskCard = () => {
   const { tasks, loading, deleteTask } = useMainContext();
@@ -29,8 +30,8 @@ const TaskCard = () => {
                   className="team-card h-100 shadow-sm px-3 py-4 rounded"
                   style={{ background: "#e6ffed" }}
                 >
-                  <div className="d-flex flex-column gap-3" >
-                    <div className="taskDetails" >
+                  <div className="d-flex flex-column gap-3">
+                    <div className="taskDetails">
                       <div className="d-flex flex-column">
                         {/* HEADING */}
                         <div className="heading d-flex justify-content-between align-items-center">
@@ -66,7 +67,15 @@ const TaskCard = () => {
 
                     {/* DELETE BUTTON */}
                     <div className="deleteBtn d-flex align-items-center">
-                      <button onClick={()=> deleteTask(task._id, task.name)} className="btn btn-danger">Delete Task</button>
+                      <button
+                        onClick={() => deleteTask(task._id, task.name)}
+                        className="btn btn-danger d-flex align-items-center justify-content-center gap-1"
+                      >
+                        <div className="mb-1">
+                          <MdDeleteForever />
+                        </div>
+                        <p className="mb-0">Delete Task</p>
+                      </button>
                     </div>
                   </div>
                 </div>

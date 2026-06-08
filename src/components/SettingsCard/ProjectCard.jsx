@@ -1,6 +1,7 @@
 import React from "react";
 import useMainContext from "../../contexts/useMainContext";
 import { FaFileCode } from "react-icons/fa";
+import { MdDeleteForever } from "react-icons/md";
 
 const ProjectCard = () => {
   const { projects, loading, deleteProject } = useMainContext();
@@ -68,7 +69,15 @@ const ProjectCard = () => {
 
                     {/* DELETE BUTTON */}
                     <div className="deleteBtn d-flex align-items-center justify-content-center">
-                      <button onClick={()=> deleteProject(project._id, project.name)} className="btn btn-danger">Delete Project</button>
+                      <button
+                        onClick={() => deleteProject(project._id, project.name)}
+                        className="btn btn-danger d-flex align-items-center justify-content-center gap-1"
+                      >
+                        <div className="mb-1">
+                          <MdDeleteForever />
+                        </div>
+                        <p className="mb-0">Delete Project</p>
+                      </button>
                     </div>
                   </div>
                 </div>
