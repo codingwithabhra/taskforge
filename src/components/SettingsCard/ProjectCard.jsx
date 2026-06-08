@@ -68,7 +68,7 @@ const ProjectCard = () => {
 
                     {/* DELETE BUTTON */}
                     <div className="deleteBtn d-flex align-items-center justify-content-center">
-                      <button onClick={()=> deleteProject(project._id)} className="btn btn-danger">Delete Project</button>
+                      <button onClick={()=> deleteProject(project._id, project.name)} className="btn btn-danger">Delete Project</button>
                     </div>
                   </div>
                 </div>

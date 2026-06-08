@@ -5,10 +5,22 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import useMainContext from "../../contexts/useMainContext";
 import { Link } from "react-router-dom";
+import { TfiEye } from "react-icons/tfi";
+import { RiDeleteBin6Line } from "react-icons/ri";
 
 const TeamContent = () => {
-  const { teamData, setTeamData, allUsers, setAllUsers, loading, setLoading, getInitials, getColor, fetchTeamData } =
-    useMainContext();
+  const {
+    teamData,
+    setTeamData,
+    allUsers,
+    setAllUsers,
+    loading,
+    setLoading,
+    getInitials,
+    getColor,
+    fetchTeamData,
+    handleDeleteTeam,
+  } = useMainContext();
   console.log(teamData);
 
   const [teamName, setTeamName] = useState("");
@@ -48,10 +60,20 @@ const TeamContent = () => {
 
       // Success Notification
       toast.success("Team Created Successfully");
+
+      document
+        .querySelector('#createTeamModal [data-bs-dismiss="modal"]')
+        ?.click();
     } catch (error) {
       console.log(error.response?.data || error.message);
       // Error Notification
-      toast.error("Error creating team");
+      const errorMessage =
+        error.response?.data?.message ||
+        error.response?.data?.error ||
+        error.message ||
+        "Failed to create team";
+
+      toast.error(errorMessage);
     }
   };
 
@@ -160,7 +182,7 @@ const TeamContent = () => {
         <div className="row g-5">
           {loading ? (
             <div className="">
-                <span className="">Loading...</span>
+              <span className="">Loading...</span>
             </div>
           ) : teamData?.length > 0 ? (
             teamData.map((team) => (
@@ -169,39 +191,58 @@ const TeamContent = () => {
                   className="team-card h-100 shadow-sm p-3 rounded"
                   style={{ background: "#F5F5F5" }}
                 >
-                  <div className="d-flex flex-column">
-                    {/* HEADING */}
-                    <h5 className="fs-5 text-dark fw-bold mb-2">{team.name}</h5>
-                    {/* CONTENT */}
-                    <div className="d-flex justify-content-between flex-wrap gap-3">
-                      <div className="d-flex align-items-center mt-3">
-                        {team.members?.slice(0, 3).map((member, index) => (
-                          <div
-                            key={member._id}
-                            className="avatar-circle"
-                            style={{
-                              background: getColor(index),
-                              marginLeft: index === 0 ? "0px" : "-10px",
-                            }}
-                            title={member.name} // hover name
-                          >
-                            {getInitials(member.name)}
-                          </div>
-                        ))}
+                  <div className="d-flex flex-column h-100">
+                    {/* ================= TEAM NAME ================= */}
+                    <h5 className="fs-5 text-dark fw-bold mb-3">{team.name}</h5>
 
-                        {team.members?.length > 3 && (
-                          <div className="avatar-circle extra">
-                            +{team.members.length - 3}
+                    {/* ================= MEMBERS ================= */}
+                    <div className="d-flex align-items-center mb-4">
+                      {team.members?.slice(0, 3).map((member, index) => (
+                        <div
+                          key={member._id}
+                          className="avatar-circle"
+                          style={{
+                            background: getColor(index),
+                            marginLeft: index === 0 ? "0px" : "-10px",
+                          }}
+                          title={member.name}
+                        >
+                          {getInitials(member.name)}
+                        </div>
+                      ))}
+
+                      {team.members?.length > 3 && (
+                        <div className="avatar-circle extra">
+                          +{team.members.length - 3}
+                        </div>
+                      )}
+                    </div>
+
+                    {/* ================= BUTTONS ================= */}
+                    <div className="row g-2 mt-auto">
+                      <div className="col-12 col-sm-6">
+                        <Link
+                          to={`/team/${team._id}`}
+                          className="btn btn-primary w-100 d-flex align-items-center justify-content-center gap-2"
+                        >
+                          <div className="mb-0">
+                            <TfiEye />
                           </div>
-                        )}
+                          <div className="mb-0">View Team</div>
+                        </Link>
                       </div>
 
-                      <Link
-                        className="btn btn-primary btn-sm mt-3 w-20"
-                        to={`/team/${team._id}`}
-                      >
-                        View Team
-                      </Link>
+                      <div className="col-12 col-sm-6">
+                        <button
+                          className="btn btn-danger w-100 d-flex align-items-center justify-content-center gap-2"
+                          onClick={() => handleDeleteTeam(team._id, team.name)}
+                        >
+                          <div className="mb-0">
+                            <RiDeleteBin6Line />
+                          </div>
+                          <div className="mb-0">Delete Team</div>
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>

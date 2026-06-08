@@ -9,11 +9,18 @@ import TaskCard from "../SettingsCard/TaskCard";
 const SettingPage = () => {
   const navigate = useNavigate();
 
-  const { allUsers, currentUser, setCurrentUser } = useMainContext();
+  const { allUsers, currentUser, setCurrentUser, teamData } = useMainContext();
 
   const logedInUser = allUsers?.find((user) => user._id === currentUser?._id);
 
+  const teamName = teamData?.find((team) =>
+    team.members?.some(
+      (member) => member._id?.toString() === logedInUser?._id?.toString(),
+    ),
+  );
+
   console.log("The logged in user details--", logedInUser);
+  console.log("The logged in user team--", teamName);
 
   //Creating Log Out
   const handleLogout = () => {
@@ -98,7 +105,7 @@ const SettingPage = () => {
 
                   <div className="col-8 col-sm-9">
                     <span className="badge bg-primary px-3 py-2 fs-6">
-                      Development Team
+                      {teamName?.name || "No Team Assigned"}
                     </span>
                   </div>
                 </div>

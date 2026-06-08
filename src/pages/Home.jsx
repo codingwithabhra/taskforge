@@ -9,7 +9,7 @@ const Home = () => {
     <>
       <header className="d-lg-none w-100 px-3 pt-3 d-flex justify-content-between align-items-center">
         <div className="logo">
-          <Link to="/home" className="logo-link">
+          <Link to="/dashboard" className="logo-link">
             <img src="/Logo.png" alt="logo" style={{ height: "40px" }} />
           </Link>
         </div>

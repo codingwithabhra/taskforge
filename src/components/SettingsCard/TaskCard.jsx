@@ -66,7 +66,7 @@ const TaskCard = () => {
 
                     {/* DELETE BUTTON */}
                     <div className="deleteBtn d-flex align-items-center">
-                      <button onClick={()=> deleteTask(task._id)} className="btn btn-danger">Delete Task</button>
+                      <button onClick={()=> deleteTask(task._id, task.name)} className="btn btn-danger">Delete Task</button>
                     </div>
                   </div>
                 </div>

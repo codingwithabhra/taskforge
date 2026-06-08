@@ -3,6 +3,7 @@ import "./login.css";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import useMainContext from "../../contexts/useMainContext";
+import { toast } from "react-toastify";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -38,10 +39,13 @@ const Login = () => {
       // Update context
       setCurrentUser(response.data.user);
 
+      toast.success("Login successfull");
+
       // redirecting to home page
       navigate("/dashboard");
     } catch (error) {
       setError(error.response?.data?.error || "Login Failed");
+      toast.error("Invalid credentials");
     }
   };
 

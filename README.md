@@ -13,8 +13,8 @@ It enables users to create projects, assign tasks, manage deadlines, and organiz
 ## Log In
 
 > **Guest**
-> Username: 'Amit Sharma'
-> Email: 'amit.sharma01@example.com'
+> Username: 'Amit Sharma',
+> Email: 'amit.sharma01@example.com',
 > Password: 'Password@123'
 
 ---

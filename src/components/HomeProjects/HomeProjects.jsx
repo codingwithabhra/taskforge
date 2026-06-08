@@ -24,27 +24,35 @@ const HomeProjects = () => {
   } = useMainContext();
   // console.log("this is from project component -- ", projects);
 
-  const { filter, setFilter } = useFilterContext();
+  const [statusFilter, setStatusFilter] = useState("all");
 
   let filteredProjects = [...projects];
 
   // Filter by status
-  if (filter.status === "completed") {
+  if (statusFilter.status === "completed") {
     filteredProjects = filteredProjects.filter(
       (project) => project.status === "completed",
     );
   }
 
-  if (filter.status === "inprogress") {
+  if (statusFilter.status === "to do") {
+    filteredProjects = filteredProjects.filter(
+      (project) => project.status === "to do",
+    );
+  }
+
+  if (statusFilter.status === "inprogress") {
     filteredProjects = filteredProjects.filter(
       (project) => project.status === "inprogress",
     );
   }
 
-  if (filter.status === "all") {
+  if (statusFilter.status === "all") {
     filteredProjects = filteredProjects.filter(
       (project) =>
-        project.status === "inprogress" || project.status === "completed",
+        project.status === "inprogress" ||
+        project.status === "completed" ||
+        project.status === "to do",
     );
   }
 
@@ -61,18 +69,20 @@ const HomeProjects = () => {
             id="filterBtn"
             className="mx-2"
             onChange={(e) =>
-              setFilter((prev) => ({
+              setStatusFilter((prev) => ({
                 ...prev,
                 status: e.target.value,
               }))
             }
           >
             <option value="all">All</option>
+            <option value="to do">To Do</option>
             <option value="inprogress">In Progress</option>
             <option value="completed">Completed</option>
           </select>
           <button
             className="teamBtn"
+            id="createProjectBtn"
             data-bs-toggle="modal"
             data-bs-target="#createProjectModal"
           >
@@ -120,7 +130,7 @@ const HomeProjects = () => {
                   <label className="form-label">Project Description</label>
                   <textarea
                     className="form-control"
-                    placeholder="Enter project description"
+                    placeholder="Write description in more than 5 words."
                     rows={6}
                     style={{ resize: "vertical" }}
                     value={projectDescription}
@@ -149,34 +159,11 @@ const HomeProjects = () => {
                     onChange={(e) => setProjectStatus(e.target.value)}
                   >
                     <option value="">Select Status</option>
+                    <option value="to do">To Do</option>
                     <option value="inprogress">In Progress</option>
                     <option value="completed">Completed</option>
                   </select>
                 </div>
-
-                {/* Teams */}
-                {/* <div className="mb-3">
-                  <label className="form-label">Add Teams</label>
-
-                  <select
-                    multiple
-                    className="form-select"
-                    value={members}
-                    onChange={(e) =>
-                      setMembers(
-                        [...e.target.selectedOptions].map(
-                          (option) => option.value,
-                        ),
-                      )
-                    }
-                  >
-                    {allUsers.map((user) => (
-                      <option key={user._id} value={user._id}>
-                        {user.name} ({user.email})
-                      </option>
-                    ))}
-                  </select>
-                </div> */}
               </form>
             </div>
 
@@ -233,11 +220,14 @@ const HomeProjects = () => {
                         style={{ fontSize: "0.8rem" }}
                       >
                         <span
-                          className={`badge ${project.status === "completed" ? "bg-success" : "bg-warning"}`}
+                          className={`badge ${project.status === "completed" ? "bg-success" : project.status === "todo" ? "bg-primary" : "bg-warning"}`}
+                          style={{ marginLeft: "5px" }}
                         >
                           {project.status === "completed"
                             ? "Completed"
-                            : "In Progress"}
+                            : project.status === "todo"
+                              ? "To Do"
+                              : "In Progress"}
                         </span>
                       </div>
                     </div>

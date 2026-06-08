@@ -27,7 +27,7 @@ const Sidebar2 = () => {
               <Link className="sidebar-link fs-5" to="/projects">
                 {/* <img src="/project.png" alt="project" className="sidebar-icon" /> */}
                 <GoProjectSymlink />
-                <span>Project</span>
+                <span>Projects</span>
               </Link>
             </li>
             {/* TEAM */}
@@ -35,7 +35,7 @@ const Sidebar2 = () => {
               <Link className="sidebar-link fs-5" to="/team">
                 {/* <img src="/teams.png" alt="team" className="sidebar-icon" /> */}
                 <HiOutlineUserGroup />
-                <span>Team</span>
+                <span>Teams</span>
               </Link>
             </li>
             {/* REPORTS */}
