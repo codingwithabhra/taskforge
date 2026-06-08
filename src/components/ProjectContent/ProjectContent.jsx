@@ -1,6 +1,8 @@
 import React from "react";
 import useMainContext from "../../contexts/useMainContext";
 import { Link } from "react-router-dom";
+import { useState } from "react";
+import { useFilterContext } from "../../contexts/filterContext";
 
 const ProjectContent = () => {
   const {
@@ -19,6 +21,36 @@ const ProjectContent = () => {
     setProjectStatus,
   } = useMainContext();
 
+  const [statusFilter, setStatusFilter] = useState("all");
+
+  let filteredProjects = [...projects];
+
+  // Filter by status
+  if (statusFilter.status === "completed") {
+    filteredProjects = filteredProjects.filter(
+      (project) => project.status === "completed",
+    );
+  }
+
+  if (statusFilter.status === "to do") {
+    filteredProjects = filteredProjects.filter(
+      (project) => project.status === "to do",
+    );
+  }
+
+  if (statusFilter.status === "inprogress") {
+    filteredProjects = filteredProjects.filter(
+      (project) => project.status === "inprogress",
+    );
+  }
+
+  if (statusFilter.status === "all") {
+    filteredProjects = filteredProjects.filter(
+      (project) =>
+        project.status === "inprogress" || project.status === "completed" || project.status === "to do",
+    );
+  }
+
   return (
     <div className="container-fluid pt-3">
       <div className="projectTop d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
@@ -26,14 +58,25 @@ const ProjectContent = () => {
           <h1>Projects</h1>
         </div>
         <div className="projectTop-buttons">
-          <select name="filter" id="filterBtn" className="mx-2">
-            <option value="">Filter</option>
-            <option value="">Filter 1</option>
-            <option value="">Filter 2</option>
-            <option value="">Filter 3</option>
+          <select
+            name="filter"
+            id="filterBtn"
+            className="mx-2"
+            onChange={(e) =>
+              setStatusFilter((prev) => ({
+                ...prev,
+                status: e.target.value,
+              }))
+            }
+          >
+            <option value="all">All</option>
+            <option value="to do">To Do</option>
+            <option value="inprogress">In Progress</option>
+            <option value="completed">Completed</option>
           </select>
           <button
             className="teamBtn"
+            id="createProjectBtn"
             data-bs-toggle="modal"
             data-bs-target="#createProjectModal"
           >
@@ -112,34 +155,11 @@ const ProjectContent = () => {
                     onChange={(e) => setProjectStatus(e.target.value)}
                   >
                     <option value="">Select Status</option>
+                    <option value="to do">To Do</option>
                     <option value="inprogress">In Progress</option>
                     <option value="completed">Completed</option>
                   </select>
                 </div>
-
-                {/* Teams */}
-                {/* <div className="mb-3">
-                  <label className="form-label">Add Teams</label>
-
-                  <select
-                    multiple
-                    className="form-select"
-                    value={members}
-                    onChange={(e) =>
-                      setMembers(
-                        [...e.target.selectedOptions].map(
-                          (option) => option.value,
-                        ),
-                      )
-                    }
-                  >
-                    {allUsers.map((user) => (
-                      <option key={user._id} value={user._id}>
-                        {user.name} ({user.email})
-                      </option>
-                    ))}
-                  </select>
-                </div> */}
               </form>
             </div>
 
@@ -169,9 +189,13 @@ const ProjectContent = () => {
         <div className="row g-5">
           {loading ? (
             <p>Loading projects...</p>
-          ) : projects.length > 0 ? (
-            projects?.map((project) => (
-              <Link key={project._id} className="col-lg-4 col-md-6 col-sm-12 text-decoration-none text-dark" to={`/projects/${project._id}`}>
+          ) : filteredProjects.length > 0 ? (
+            filteredProjects?.map((project) => (
+              <Link
+                key={project._id}
+                className="col-lg-4 col-md-6 col-sm-12 text-decoration-none text-dark"
+                to={`/projects/${project._id}`}
+              >
                 <div
                   className="team-card h-100 shadow-sm px-3 py-4 rounded"
                   style={{ background: "#F5F5F5" }}
@@ -196,12 +220,14 @@ const ProjectContent = () => {
                         <h6 className="mb-0">
                           Status:
                           <span
-                            className={`badge ${project.status === "completed" ? "bg-success" : "bg-warning"}`}
+                            className={`badge ${project.status === "completed" ? "bg-success" : project.status === "todo" ? "bg-primary" : "bg-warning"}`}
                             style={{ marginLeft: "5px" }}
                           >
                             {project.status === "completed"
                               ? "Completed"
-                              : "In Progress"}
+                              : project.status === "todo"
+                                ? "To Do"
+                                : "In Progress"}
                           </span>
                         </h6>
                       </div>

@@ -3,6 +3,7 @@ import { createContext, useContext, useState, useEffect } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useParams } from "react-router-dom";
+import * as bootstrap from "bootstrap";
 
 const MainContext = createContext();
 export const useMainContext = () => useContext(MainContext);
@@ -26,6 +27,9 @@ export const MainContextProvider = ({ children }) => {
   const [taskPriority, setTaskPriority] = useState("");
   const [taskTags, setTaskTags] = useState([]);
   const [selectedOwners, setSelectedOwners] = useState([]);
+  // TEAM RELATED STATES
+  const [selectedMembers, setSelectedMembers] = useState([]);
+  const [selectedMembersToRemove, setSelectedMembersToRemove] = useState([]);
 
   //Storing logged in user's info
   useEffect(() => {
@@ -64,11 +68,14 @@ export const MainContextProvider = ({ children }) => {
     try {
       const token = localStorage.getItem("token");
       if (!token) return;
-      const res = await axios.get("https://taskforge-backend.vercel.app/auth/users", {
-        headers: {
-          Authorization: `Bearer ${token}`,
+      const res = await axios.get(
+        "https://taskforge-backend.vercel.app/auth/users",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         },
-      });
+      );
       setAllUsers(res.data);
     } catch (error) {
       console.error(error);
@@ -80,16 +87,19 @@ export const MainContextProvider = ({ children }) => {
     try {
       const token = localStorage.getItem("token");
       if (!token) return;
-      const response = await axios.get("https://taskforge-backend.vercel.app/teams", {
-        headers: {
-          Authorization: `Bearer ${token}`,
+      const response = await axios.get(
+        "https://taskforge-backend.vercel.app/teams",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         },
-      });
+      );
       setTeamData(response.data);
       console.log("This is from context --", response);
     } catch (error) {
       console.log("Error fetching teams -- ", error);
-    } 
+    }
   };
 
   // Fetching projects on component mount
@@ -97,15 +107,18 @@ export const MainContextProvider = ({ children }) => {
     try {
       const token = localStorage.getItem("token");
       if (!token) return;
-      const response = await axios.get("https://taskforge-backend.vercel.app/projects", {
-        headers: {
-          Authorization: `Bearer ${token}`,
+      const response = await axios.get(
+        "https://taskforge-backend.vercel.app/projects",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         },
-      });
+      );
       setProjects(response.data);
     } catch (error) {
       console.error("Error fetching projects:", error);
-    } 
+    }
   };
 
   // Fetching task data on component mount
@@ -114,16 +127,19 @@ export const MainContextProvider = ({ children }) => {
       const token = localStorage.getItem("token");
       if (!token) return;
 
-      const response = await axios.get("https://taskforge-backend.vercel.app/tasks", {
-        headers: {
-          Authorization: `Bearer ${token}`,
+      const response = await axios.get(
+        "https://taskforge-backend.vercel.app/tasks",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         },
-      });
+      );
 
       setTasks(response.data);
     } catch (error) {
       console.log("Error fetching tasks: ", error);
-    } 
+    }
   };
 
   // one main useeffect
@@ -186,6 +202,10 @@ export const MainContextProvider = ({ children }) => {
 
       // Success Notification
       toast.success("Project created successfully");
+
+      document
+        .querySelector('#createProjectModal [data-bs-dismiss="modal"]')
+        ?.click();
     } catch (error) {
       console.log(error.response?.data || error.message);
       // Error Notification
@@ -210,14 +230,6 @@ export const MainContextProvider = ({ children }) => {
         },
       );
 
-      // Update local state
-      // setTasks((prev) =>
-      //   prev.map((task) =>
-      //     task._id === taskId ? { ...task, status: updatedStatus } : task,
-      //   ),
-      // );
-
-      // Update local state
       await fetchTasksData();
 
       // Success Notification
@@ -227,12 +239,18 @@ export const MainContextProvider = ({ children }) => {
     } catch (error) {
       console.log("Error updating task status", error);
       // Error Notification
-      toast.error("Error updating task status");
+      const errorMessage =
+        error.response?.data?.message ||
+        error.response?.data?.error ||
+        error.message ||
+        "Error creating project";
+
+      toast.error(errorMessage);
     }
   };
 
   // Deleting a project
-  const deleteProject = async (projectId) => {
+  const deleteProject = async (projectId, projectName) => {
     try {
       const token = localStorage.getItem("token");
 
@@ -245,26 +263,26 @@ export const MainContextProvider = ({ children }) => {
         },
       );
 
-      // Update UI after delete
-      // setProjects((prev) =>
-      //   prev.filter((project) => project._id !== projectId),
-      // );
-
-      // Update UI after delete
       await fetchProjectData();
 
-      toast.success("Project deleted successfully");
+      toast.success(`Project ${projectName} deleted successfully`);
 
       return response.data;
     } catch (error) {
       console.log("Error deleting project:", error);
 
-      toast.error("Failed to delete project");
+      const errorMessage =
+        error.response?.data?.message ||
+        error.response?.data?.error ||
+        error.message ||
+        "Failed to delete project";
+
+      toast.error(errorMessage);
     }
   };
 
   // Deleting a task
-  const deleteTask = async (taskId) => {
+  const deleteTask = async (taskId, taskName) => {
     try {
       const token = localStorage.getItem("token");
 
@@ -282,13 +300,129 @@ export const MainContextProvider = ({ children }) => {
 
       await fetchTasksData();
 
-      toast.success("Task deleted successfully");
+      toast.success(`Task "${taskName}" deleted successfully`);
 
       return response.data;
     } catch (error) {
       console.log("Error deleting task:", error);
 
-      toast.error("Failed to delete task");
+      const errorMessage =
+        error.response?.data?.message ||
+        error.response?.data?.error ||
+        error.message ||
+        "Failed to delete task";
+
+      toast.error(errorMessage);
+
+    }
+  };
+
+  //adding a team member
+  const handleAddMembers = async (teamId) => {
+    try {
+      const token = localStorage.getItem("token");
+
+      const response = await axios.post(
+        `https://taskforge-backend.vercel.app/teams/${teamId}/add-member`,
+        {
+          memberIds: selectedMembers,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+
+      setSelectedMembers([]);
+
+      await fetchTeamData();
+
+      toast.success("Member(s) added successfully");
+
+      document
+        .querySelector('#addMemberModal [data-bs-dismiss="modal"]')
+        ?.click();
+    } catch (error) {
+      console.log("Error adding member:", error);
+
+      const errorMessage =
+        error.response?.data?.message ||
+        error.response?.data?.error ||
+        error.message ||
+        "Failed to add member";
+
+      toast.error(errorMessage);
+    }
+  };
+
+  //removing a team member
+  const handleRemoveMembers = async (teamId) => {
+    try {
+      const token = localStorage.getItem("token");
+
+      const response = await axios.delete(
+        `https://taskforge-backend.vercel.app/teams/${teamId}/remove-member`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          data: {
+            memberIds: selectedMembersToRemove,
+          },
+        },
+      );
+
+      setSelectedMembersToRemove([]);
+
+      await fetchTeamData();
+
+      toast.success("Member(s) removed successfully");
+
+      document
+        .querySelector('#removeMemberModal [data-bs-dismiss="modal"]')
+        ?.click();
+    } catch (error) {
+      console.log("Error adding member:", error);
+
+      const errorMessage =
+        error.response?.data?.message ||
+        error.response?.data?.error ||
+        error.message ||
+        "Failed to remove member";
+
+      toast.error(errorMessage);
+
+    }
+  };
+
+  // DELETE TEAM
+  const handleDeleteTeam = async (teamId, teamName) => {
+    try {
+      const token = localStorage.getItem("token");
+
+      await axios.delete(
+        `https://taskforge-backend.vercel.app/teams/${teamId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+
+      await fetchTeamData();
+
+      toast.success(`"Team ${teamName}" deleted successfully`);
+    } catch (error) {
+      console.log(error.response?.data || error.message);
+
+      const errorMessage =
+        error.response?.data?.message ||
+        error.response?.data?.error ||
+        error.message ||
+        "Failed to delete team";
+
+      toast.error(errorMessage);
     }
   };
 
@@ -339,7 +473,14 @@ export const MainContextProvider = ({ children }) => {
         deleteTask,
         fetchProjectData,
         fetchTasksData,
-        fetchTeamData
+        fetchTeamData,
+        selectedMembers,
+        setSelectedMembers,
+        selectedMembersToRemove,
+        setSelectedMembersToRemove,
+        handleAddMembers,
+        handleRemoveMembers,
+        handleDeleteTeam,
       }}
     >
       {children}

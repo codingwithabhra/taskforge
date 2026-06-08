@@ -13,7 +13,7 @@ const Sidebar = () => {
       <div className="sidebar p-4">
         {/* FOR LOGO */}
         <div className="logo mt-3 mb-5">
-          <Link to="/home" className="logo-link">
+          <Link to="/dashboard" className="logo-link">
             <img src="/Logo.png" alt="logo" />
           </Link>
         </div>
@@ -34,7 +34,7 @@ const Sidebar = () => {
               <Link className="sidebar-link fs-5" to="/projects">
                 {/* <img src="/project.png" alt="project" className="sidebar-icon" /> */}
                 <GoProjectSymlink />
-                <span>Project</span>
+                <span>Projects</span>
               </Link>
             </li>
             {/* TEAM */}
@@ -42,7 +42,7 @@ const Sidebar = () => {
               <Link className="sidebar-link fs-5" to="/team">
                 {/* <img src="/teams.png" alt="team" className="sidebar-icon" /> */}
                 <HiOutlineUserGroup />
-                <span>Team</span>
+                <span>Teams</span>
               </Link>
             </li>
             {/* REPORTS */}

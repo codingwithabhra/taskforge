@@ -190,15 +190,21 @@ const Taskdetails = () => {
                     {/*BUTTON */}
                     <div className="button">
                       <button
-                        onClick={handleMarkComplete}
-                        className="bg-none px-3 py-2 rounded"
-                        style={{
-                          backgroundColor: "#086ae8",
-                          color: "white",
-                          border: "none",
-                        }}
+                        onClick={
+                          task.status !== "Completed"
+                            ? handleMarkComplete
+                            : undefined
+                        }
+                        disabled={task.status === "Completed"}
+                        className={`btn ${
+                          task.status === "Completed"
+                            ? "btn-success"
+                            : "btn-primary"
+                        }`}
                       >
-                        Mark as complete
+                        {task.status === "Completed"
+                          ? "Completed"
+                          : "Mark as Complete"}
                       </button>
                     </div>
                   </div>

@@ -126,9 +126,20 @@ const HomeMyTask = () => {
       await fetchTasksData();
 
       toast.success("Task created successfully");
+
+      document
+        .querySelector('#createTaskModal [data-bs-dismiss="modal"]')
+        ?.click();
     } catch (error) {
       console.log("Error creating task", error);
-      toast.error("Error creating task");
+
+      const errorMessage =
+        error.response?.data?.message ||
+        error.response?.data?.error ||
+        error.message ||
+        "Error creating task";
+
+      toast.error(errorMessage);
     }
   };
 
@@ -157,6 +168,7 @@ const HomeMyTask = () => {
           </select>
           <button
             className="teamBtn"
+            id="createTaskBtn"
             data-bs-toggle="modal"
             data-bs-target="#createTaskModal"
           >

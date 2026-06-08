@@ -35,6 +35,7 @@ const ProjectDetails = () => {
     selectedOwners,
     setSelectedOwners,
     fetchTasksData,
+    fetchProjectData,
   } = useMainContext();
 
   const { filter, setFilter } = useFilterContext();
@@ -43,6 +44,12 @@ const ProjectDetails = () => {
   const [teamMembers, setTeamMembers] = useState([]);
 
   const project = findProjectById(projectId);
+  console.log("This is from project details -- ", project);
+
+  const [editProjectName, setEditProjectName] = useState(project?.name || "");
+  const [editProjectDescription, setEditProjectDescription] = useState(
+    project?.description || "",
+  );
 
   if (!project) return <p>Loading ...</p>;
 
@@ -144,9 +151,20 @@ const ProjectDetails = () => {
       await fetchTasksData();
 
       toast.success("Task created successfully");
+
+      document
+        .querySelector('#createTaskModal [data-bs-dismiss="modal"]')
+        ?.click();
     } catch (error) {
       console.log("Error creating task", error);
-      toast.error("Error creating task");
+
+      const errorMessage =
+        error.response?.data?.message ||
+        error.response?.data?.error ||
+        error.message ||
+        "Error creating task";
+
+      toast.error(errorMessage);
     }
   };
 
@@ -156,6 +174,51 @@ const ProjectDetails = () => {
   const formattedDate = `${String(date.getDate()).padStart(2, "0")}/${String(
     date.getMonth() + 1,
   ).padStart(2, "0")}/${String(date.getFullYear())}`;
+
+  //updating project details
+  const handleUpdateProject = async () => {
+    try {
+      const token = localStorage.getItem("token");
+
+      const response = await axios.post(
+        `https://taskforge-backend.vercel.app/projects/${projectId}`,
+        {
+          name: editProjectName,
+          description: editProjectDescription,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+      console.log("from changed data--", response.data);
+      // Update local state immediately
+      const updatedProject = response.data.data;
+
+      const updatedProjects = projects.map((p) =>
+        p._id === projectId ? updatedProject : p,
+      );
+
+      await fetchProjectData();
+
+      toast.success(`"Project ${updatedProject.name}" updated successfully`);
+
+      document
+        .querySelector('#editProjectModal [data-bs-dismiss="modal"]')
+        ?.click();
+    } catch (error) {
+      console.log(error);
+
+      const errorMessage =
+        error.response?.data?.message ||
+        error.response?.data?.error ||
+        error.message ||
+        "Failed to update project";
+
+      toast.error(errorMessage);
+    }
+  };
 
   return (
     <div className="container-fluid pt-4">
@@ -171,7 +234,21 @@ const ProjectDetails = () => {
 
       {/* PROJECT DETAILS */}
       <div className="container-fluid pt-5 mb-3">
-        <h1 className="fw-bold">{project.name}</h1>
+        <div className="d-flex justify-content-between align-items-center flex-wrap gap-2">
+          <h1 className="fw-bold mb-0">{project.name}</h1>
+
+          <button
+            className="btn btn-outline-primary"
+            data-bs-toggle="modal"
+            data-bs-target="#editProjectModal"
+            onClick={() => {
+              setEditProjectName(project.name);
+              setEditProjectDescription(project.description);
+            }}
+          >
+            Edit Project
+          </button>
+        </div>
         <p className="mt-3 text-secondary">{project.description}</p>
 
         {/* SORT BY and FILTER and CREATE TASK */}
@@ -411,6 +488,59 @@ const ProjectDetails = () => {
                 onClick={handleCreateTask}
               >
                 Create Task
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* EDIT PROJECT MODAL */}
+      <div
+        className="modal fade"
+        id="editProjectModal"
+        tabIndex="-1"
+        aria-hidden="true"
+      >
+        <div className="modal-dialog modal-dialog-centered">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title">Edit Project</h5>
+              <button
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="modal"
+              ></button>
+            </div>
+
+            <div className="modal-body">
+              <div className="mb-3">
+                <label className="form-label">Project Name</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  value={editProjectName}
+                  onChange={(e) => setEditProjectName(e.target.value)}
+                />
+              </div>
+
+              <div className="mb-3">
+                <label className="form-label">Project Description</label>
+                <textarea
+                  rows="4"
+                  className="form-control"
+                  value={editProjectDescription}
+                  onChange={(e) => setEditProjectDescription(e.target.value)}
+                />
+              </div>
+            </div>
+
+            <div className="modal-footer">
+              <button className="btn btn-secondary" data-bs-dismiss="modal">
+                Cancel
+              </button>
+
+              <button className="btn btn-primary" onClick={handleUpdateProject}>
+                Save Changes
               </button>
             </div>
           </div>
