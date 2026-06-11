@@ -13,12 +13,12 @@ const Signup = () => {
   const navigate = useNavigate();
 
   const handleSignup = async () => {
-    if (password.length < 8) {
+    if (password.length < 7) {
       toast.error("Password must be at least 7 characters");
       return;
     }
 
-    if (password.length > 20) {
+    if (password.length > 15) {
       toast.error("Password cannot exceed 15 characters");
       return;
     }

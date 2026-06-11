@@ -20,3 +20,32 @@
   background-color: #fff6e3;
   color: #000;
 }
+
+@media (max-width: 767px) {
+  .card {
+    border-radius: 15px;
+  }
+
+  .card-body {
+    padding: 1rem;
+  }
+
+  .card h5 {
+    font-size: 1.1rem;
+  }
+
+  .avatar-circle {
+    width: 32px;
+    height: 32px;
+    font-size: 12px;
+  }
+
+  .priority-badge {
+    padding: 4px 8px;
+    font-size: 13px;
+  }
+
+  .sort-filter-createTask{
+    margin-top: 10px!important;
+  }
+}

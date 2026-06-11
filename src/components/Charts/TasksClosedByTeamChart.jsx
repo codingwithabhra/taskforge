@@ -1,7 +1,7 @@
 import React from "react";
 import { Doughnut } from "react-chartjs-2";
 import useMainContext from "../../contexts/useMainContext";
-import "./Chart.css"
+import "./Chart.css";
 
 const TasksClosedByTeamChart = () => {
   const { tasks, teamData, findTeamById } = useMainContext();
@@ -34,13 +34,23 @@ const TasksClosedByTeamChart = () => {
     ],
   };
 
+  const options = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        position: "bottom",
+      },
+    },
+  };
+
   return (
-    <div className="container-fluid chart">
+    <div className="chart">
       <div className="card shadow-sm border-0 p-4">
         <h4 className="fw-bold mb-3">Tasks Closed by Team</h4>
 
-        <div style={{ height: "250px" }} className="d-flex align-items-center justify-content-center">
-          <Doughnut data={data} />
+        <div className="chart-container" style={{ height: "250px" }}>
+          <Doughnut data={data} options={options} />
         </div>
       </div>
     </div>

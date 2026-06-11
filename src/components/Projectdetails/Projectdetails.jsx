@@ -221,7 +221,7 @@ const ProjectDetails = () => {
   };
 
   return (
-    <div className="container-fluid pt-4">
+    <div className="container-fluid p-4">
       <Link
         to={backPath}
         className="text-decoration-none fs-5 d-flex align-items-center fw-semibold"
@@ -233,108 +233,123 @@ const ProjectDetails = () => {
       </Link>
 
       {/* PROJECT DETAILS */}
-      <div className="container-fluid pt-5 mb-3">
-        <div className="d-flex justify-content-between align-items-center flex-wrap gap-2">
-          <h1 className="fw-bold mb-0">{project.name}</h1>
+      <div className="pt-5 mb-3">
+        <div className="row align-items-center gy-3 mb-4">
+          {/* Project Title & Description */}
+          <div className="col-12 col-md-10">
+            <h1 className="fw-bold mb-2">{project.name}</h1>
+            <p className="text-secondary mb-0">{project.description}</p>
+          </div>
 
-          <button
-            className="btn btn-outline-primary"
-            data-bs-toggle="modal"
-            data-bs-target="#editProjectModal"
-            onClick={() => {
-              setEditProjectName(project.name);
-              setEditProjectDescription(project.description);
-            }}
-          >
-            Edit Project
-          </button>
+          {/* Edit Button */}
+          <div className="col-12 col-md-2">
+            <button
+              className="btn btn-outline-primary w-100"
+              data-bs-toggle="modal"
+              data-bs-target="#editProjectModal"
+              onClick={() => {
+                setEditProjectName(project.name);
+                setEditProjectDescription(project.description);
+              }}
+            >
+              Edit Project
+            </button>
+          </div>
         </div>
-        <p className="mt-3 text-secondary">{project.description}</p>
 
-        {/* SORT BY and FILTER and CREATE TASK */}
-        <div className="d-flex justify-content-between align-items-center flex-wrap gap-3 mt-5">
-          {/* SORT BY BUTTONS */}
-          <div className="d-flex justify-content-between align-items-center flex-wrap gap-3">
-            <div className="projectdetails-sortby">
-              <p className="mb-0">Sort By :</p>
-            </div>
-            <div className="projectdetails-btns d-flex gap-2 flex-wrap">
-              <button
-                className="btn btn-outline-secondary"
-                onClick={() =>
-                  setFilter((prev) => ({ ...prev, priority: "high" }))
-                }
-              >
-                High
-              </button>
-              <button
-                className="btn btn-outline-secondary"
-                onClick={() =>
-                  setFilter((prev) => ({ ...prev, priority: "medium" }))
-                }
-              >
-                Medium
-              </button>
-              <button
-                className="btn btn-outline-secondary"
-                onClick={() =>
-                  setFilter((prev) => ({ ...prev, priority: "low" }))
-                }
-              >
-                Low
-              </button>
-              <button
-                className="btn btn-outline-secondary"
-                onClick={() =>
-                  setFilter((prev) => ({
-                    ...prev,
-                    priority: "",
-                    sortByDate: "asc",
-                  }))
-                }
-              >
-                Due Date
-              </button>
-              {/* CLEAR FILTER BUTTON */}
-              <button
-                className="btn btn-outline-danger"
-                onClick={() =>
-                  setFilter({
-                    priority: "",
-                    status: "all",
-                    sortByDate: "",
-                  })
-                }
-              >
-                Clear Filters
-              </button>
+        {/* SORT BY, FILTER & CREATE TASK */}
+        <div className="row mt-5 gy-3 sort-filter-createTask">
+          {/* SORT BY SECTION */}
+          <div className="col-12 col-lg-9">
+            <div className="d-flex flex-column flex-md-row gap-3 align-items-md-center">
+              <div>
+                <p className="mb-0 fw-semibold">Sort By :</p>
+              </div>
+
+              <div className="d-flex flex-wrap gap-2">
+                <button
+                  className="btn btn-outline-secondary"
+                  onClick={() =>
+                    setFilter((prev) => ({ ...prev, priority: "high" }))
+                  }
+                >
+                  High
+                </button>
+
+                <button
+                  className="btn btn-outline-secondary"
+                  onClick={() =>
+                    setFilter((prev) => ({ ...prev, priority: "medium" }))
+                  }
+                >
+                  Medium
+                </button>
+
+                <button
+                  className="btn btn-outline-secondary"
+                  onClick={() =>
+                    setFilter((prev) => ({ ...prev, priority: "low" }))
+                  }
+                >
+                  Low
+                </button>
+
+                <button
+                  className="btn btn-outline-secondary"
+                  onClick={() =>
+                    setFilter((prev) => ({
+                      ...prev,
+                      priority: "",
+                      sortByDate: "asc",
+                    }))
+                  }
+                >
+                  Due Date
+                </button>
+
+                <button
+                  className="btn btn-outline-danger"
+                  onClick={() =>
+                    setFilter({
+                      priority: "",
+                      status: "all",
+                      sortByDate: "",
+                    })
+                  }
+                >
+                  Clear Filters
+                </button>
+              </div>
             </div>
           </div>
 
-          {/* FILTER & CREATE TASK BUTTONS */}
-          <div className="d-flex justify-content-between align-items-center gap-3">
-            <select
-              name="filterBtn"
-              id="filterBtn"
-              onChange={(e) =>
-                setFilter((prev) => ({
-                  ...prev,
-                  status: e.target.value,
-                }))
-              }
-            >
-              <option value="all">All</option>
-              <option value="completed">Completed</option>
-              <option value="pending">Pending</option>
-            </select>
+          {/* FILTER & CREATE TASK */}
+          <div className="col-12 col-lg-3">
+            <div className="d-flex flex-column flex-sm-row gap-3 justify-content-lg-end">
+              <select
+                className="form-select text-center"
+                name="filterBtn"
+                id="filterBtn"
+                onChange={(e) =>
+                  setFilter((prev) => ({
+                    ...prev,
+                    status: e.target.value,
+                  }))
+                }
+              >
+                <option value="all">All</option>
+                <option value="completed">Completed</option>
+                <option value="pending">Pending</option>
+              </select>
 
-            <button
-              className="teamBtn"
-              data-bs-toggle="modal"
-              data-bs-target="#createTaskModal"
-            >
-              + Create Task
-            </button>
+              <button
+                className="teamBtn"
+                data-bs-toggle="modal"
+                data-bs-target="#createTaskModal"
+              >
+                + Create Task
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -547,25 +562,93 @@ const ProjectDetails = () => {
         </div>
       </div>
 
-      {/* TASK DETAILS TABLE */}
+      {/* TASK DETAILS */}
       <div className="container-fluid mt-5">
         {loading ? (
           <p>Loading tasks ...</p>
         ) : filteredTasks.length > 0 ? (
-          <table className="table table-bordered">
-            <thead>
-              <tr className="table-primary">
-                <th>Task Name</th>
-                <th>Owners</th>
-                <th>Due Date</th>
-                <th>Status</th>
-                <th>Priority</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredTasks?.map((task) => (
-                <tr
+          <>
+            {/* DESKTOP TABLE */}
+            <div className="d-none d-md-block">
+              <div className="table-responsive">
+                <table className="table table-bordered table-hover align-middle">
+                  <thead>
+                    <tr className="table-primary">
+                      <th>Task Name</th>
+                      <th>Owners</th>
+                      <th>Due Date</th>
+                      <th>Status</th>
+                      <th>Priority</th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    {filteredTasks.map((task) => (
+                      <tr
+                        key={task._id}
+                        onClick={() =>
+                          navigate(`/tasks/${task._id}`, {
+                            state: {
+                              from: `/projects/${project._id}`,
+                            },
+                          })
+                        }
+                        style={{ cursor: "pointer" }}
+                      >
+                        <td className="fw-bold">{task.name}</td>
+
+                        <td>
+                          <div className="d-flex align-items-center">
+                            {task.owners?.slice(0, 3).map((owner, index) => (
+                              <div
+                                key={owner._id}
+                                className="avatar-circle"
+                                style={{
+                                  background: getColor(index),
+                                  marginLeft: index === 0 ? "0px" : "-10px",
+                                }}
+                                title={owner.name}
+                              >
+                                {getInitials(owner.name)}
+                              </div>
+                            ))}
+
+                            {task.owners?.length > 3 && (
+                              <div className="avatar-circle extra">
+                                +{task.owners.length - 3}
+                              </div>
+                            )}
+                          </div>
+                        </td>
+
+                        <td className="fw-bold">
+                          {new Date(task.timeToComplete).toLocaleDateString(
+                            "en-GB",
+                          )}
+                        </td>
+
+                        <td>{task.status}</td>
+
+                        <td>
+                          <span className={`priority-badge ${task.priority}`}>
+                            {task.priority.charAt(0).toUpperCase() +
+                              task.priority.slice(1)}
+                          </span>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            {/* MOBILE CARDS */}
+            <div className="d-md-none">
+              {filteredTasks.map((task) => (
+                <div
                   key={task._id}
+                  className="card shadow-sm mb-3"
+                  style={{ cursor: "pointer", backgroundColor: "#E6E6FA" }}
                   onClick={() =>
                     navigate(`/tasks/${task._id}`, {
                       state: {
@@ -573,12 +656,33 @@ const ProjectDetails = () => {
                       },
                     })
                   }
-                  style={{ cursor: "pointer" }}
                 >
-                  <td className="fw-bold">{task.name}</td>
-                  <td>
-                    <div className="d-flex justify-content-between gap-3">
-                      <div className="d-flex align-items-center">
+                  <div className="card-body">
+                    <h5 className="fw-bold mb-3">{task.name}</h5>
+
+                    <p className="mb-2">
+                      <strong>Due Date:</strong>{" "}
+                      {new Date(task.timeToComplete).toLocaleDateString(
+                        "en-GB",
+                      )}
+                    </p>
+
+                    <p className="mb-2">
+                      <strong>Status:</strong> {task.status}
+                    </p>
+
+                    <p className="mb-3">
+                      <strong>Priority:</strong>{" "}
+                      <span className={`priority-badge ${task.priority}`}>
+                        {task.priority.charAt(0).toUpperCase() +
+                          task.priority.slice(1)}
+                      </span>
+                    </p>
+
+                    <div>
+                      <strong>Owners</strong>
+
+                      <div className="d-flex align-items-center mt-2">
                         {task.owners?.slice(0, 3).map((owner, index) => (
                           <div
                             key={owner._id}
@@ -587,7 +691,7 @@ const ProjectDetails = () => {
                               background: getColor(index),
                               marginLeft: index === 0 ? "0px" : "-10px",
                             }}
-                            title={owner.name} // hover name
+                            title={owner.name}
                           >
                             {getInitials(owner.name)}
                           </div>
@@ -600,21 +704,11 @@ const ProjectDetails = () => {
                         )}
                       </div>
                     </div>
-                  </td>
-                  <td className="fw-bold">
-                    {new Date(task.timeToComplete).toLocaleDateString("en-GB")}
-                  </td>
-                  <td>{task.status}</td>
-                  <td>
-                    <span className={`priority-badge ${task.priority}`}>
-                      {task.priority.charAt(0).toUpperCase() +
-                        task.priority.slice(1)}
-                    </span>
-                  </td>
-                </tr>
+                  </div>
+                </div>
               ))}
-            </tbody>
-          </table>
+            </div>
+          </>
         ) : (
           <p>No tasks found.</p>
         )}

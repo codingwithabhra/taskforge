@@ -35,6 +35,7 @@ const PendingWorkChart = () => {
   const options = {
     indexAxis: "y",
     responsive: true,
+    maintainAspectRatio: false,
     plugins: {
       legend: {
         display: false,
@@ -42,11 +43,11 @@ const PendingWorkChart = () => {
     },
   };
   return (
-    <div className="container-fluid chart">
+    <div className="chart">
       <div className="card shadow-sm border-0 p-4">
         <h4 className="fw-bold mb-3">Total Days of Work Pending</h4>
 
-        <div style={{ height: "300px" }} className="d-flex align-items-center justify-content-center">
+        <div className="chart-container" style={{ height: "250px" }}>
           <Bar data={data} options={options} />
         </div>
       </div>

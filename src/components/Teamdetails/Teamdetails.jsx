@@ -64,17 +64,17 @@ const Teamdetails = () => {
         <span className="mx-2">Back to Teams</span>
       </Link>
 
-      <div className="container-fluid pt-5">
+      <div className="pt-5">
         <div
           className="team-card h-100 shadow-sm p-5 rounded"
           style={{ background: "#F5F5F5" }}
         >
           <div className="d-flex flex-column">
             {/* HEADING */}
-            <div className="d-flex justify-content-between flex-wrap gap-2">
-              <h5 className="fs-2 text-dark fw-bold mb-2">{team.name}</h5>
+            <div className="d-flex justify-content-between align-items-center flex-wrap gap-2">
+              <h5 className="fs-1 text-dark fw-bold mb-2">{team.name}</h5>
               <div>
-                <p className="fs-4">
+                <p className="fs-5 mb-0">
                   <span className="fw-bold">Created at :</span>{" "}
                   {formatDate(team.createdAt)}
                 </p>
@@ -114,7 +114,7 @@ const Teamdetails = () => {
           </div>
           <hr className="pt-2" />
           {/*BUTTONS */}
-          <div className="buttons d-flex justify-content-center align-items-center gap-3">
+          <div className="buttons d-flex justify-content-center align-items-center flex-wrap gap-3">
             <button
               className="btn btn-primary"
               data-bs-toggle="modal"

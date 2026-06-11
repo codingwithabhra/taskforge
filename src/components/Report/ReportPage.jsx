@@ -32,20 +32,20 @@ const ReportPage = () => {
       </div>
 
       <div className="row g-4 pt-4">
-        <div className="mb-2 col-md-6">
+        <div className="mb-2 col-12 col-md-6">
           <TasksClosedByTeamChart />
         </div>
 
-        <div className="mb-2 col-md-6">
+        <div className="mb-2 col-12 col-md-6">
           <WorkDoneLastWeekChart />
         </div>
       </div>
 
-      <div className="my-4">
+      <div className="my-4 col-12">
         <PendingWorkChart />
       </div>
 
-      <div className="pt-4">
+      <div className="pt-4 col-12">
         {/* <WorkDoneLastWeekChart /> */}
         <TasksClosedByOwnersChart />
       </div>

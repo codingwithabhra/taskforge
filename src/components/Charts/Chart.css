@@ -1,3 +1,38 @@
-.chart .card{
+.chart .card {
     background-color: rgb(242, 240, 240);
+}
+
+.chart {
+    width: 100%;
+}
+
+.chart .card {
+    width: 100%;
+}
+
+.chart-container {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+}
+
+.chart-container canvas {
+    max-width: 100% !important;
+    width: 100% !important;
+    height: 100% !important;
+}
+
+@media (max-width: 768px) {
+
+    .chart-container {
+        height: 220px !important;
+    }
+
+    .chart .card {
+        padding: 1rem !important;
+    }
+
+    .chart h4 {
+        font-size: 1rem;
+    }
 }

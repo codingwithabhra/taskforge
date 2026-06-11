@@ -42,6 +42,7 @@ const WorkDoneLastWeekChart = () => {
 
   const options = {
     responsive: true,
+    maintainAspectRatio: false,
     plugins: {
       legend: {
         display: false,
@@ -50,11 +51,11 @@ const WorkDoneLastWeekChart = () => {
   };
 
   return (
-    <div className="container-fluid chart">
+    <div className="chart">
       <div className="card shadow-sm border-0 p-4">
         <h4 className="fw-bold mb-3">Total Work Done Last Week</h4>
 
-        <div style={{ height: "250px" }} className="d-flex align-items-center justify-content-center">
+        <div className="chart-container" style={{ height: "250px" }}>
           <Bar data={data} options={options} />
         </div>
       </div>

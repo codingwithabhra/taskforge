@@ -103,8 +103,15 @@ const SettingPage = () => {
                     <h6 className="mb-0 fw-semibold text-secondary">Team :</h6>
                   </div>
 
-                  <div className="col-8 col-sm-9">
-                    <span className="badge bg-primary px-3 py-2 fs-6">
+                  <div className="col-8 col-sm-9 text-break">
+                    <span
+                      className="badge bg-primary px-3 py-2 fs-6 text-wrap"
+                      style={{
+                        maxWidth: "100%",
+                        whiteSpace: "normal",
+                        wordBreak: "break-word",
+                      }}
+                    >
                       {teamName?.name || "No Team Assigned"}
                     </span>
                   </div>
